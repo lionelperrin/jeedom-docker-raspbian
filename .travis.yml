@@ -4,15 +4,15 @@ language: generic
 services:
   - docker
 
-script: >
-  docker build --label "commit=$(TRAVIS_COMMIT)" --label "build_number=$(TRAVIS_BUILD_NUMBER)" -t jeedom_server -f jeedom-core#stable/Dockerfile jeedom-core#stable &&
-  docker build --label "commit=$(TRAVIS_COMMIT)" --label "build_number=$(TRAVIS_BUILD_NUMBER)" -t jeedom_backup -f backup/Dockerfile backup
+script: >-
+  docker build --label "commit=${TRAVIS_COMMIT}" --label "build_number=${TRAVIS_BUILD_NUMBER}" --tag docker.pkg.github.com/duhlin/jeedom-docker-raspbian/jeedom_server:latest -f jeedom-core#stable/Dockerfile jeedom-core#stable &&
+  docker build --label "commit=${TRAVIS_COMMIT}" --label "build_number=${TRAVIS_BUILD_NUMBER}" --tag docker.pkg.github.com/duhlin/jeedom-docker-raspbian/jeedom_backup:latest -f backup/Dockerfile backup
 
 deploy:
   provider: script
-  script: >
+  script: >- 
     (echo "$GITHUB_REGISTRY_TOKEN" | docker login docker.pkg.github.com -u "$GITHUB_REGISTRY_USERNAME" --password-stdin) &&
-    docker tag jeedom_server docker.pkg.github.com/duhlin/jeedom-docker-raspbian/jeedom_server:latest &&
-    docker push docker.pkg.github.com/duhlin/jeedom-docker-raspbian/jeedom_server:latest
+    docker push docker.pkg.github.com/duhlin/jeedom-docker-raspbian/jeedom_server:latest &&
+    docker push docker.pkg.github.com/duhlin/jeedom-docker-raspbian/jeedom_backup:latest
   on:
     branch: master
