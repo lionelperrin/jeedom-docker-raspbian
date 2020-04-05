@@ -1,0 +1,37 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install buildx
+      run: |
+        mkdir -p ~/.docker/cli-plugins/
+        curl -L https://github.com/docker/buildx/releases/download/v0.3.1/buildx-v0.3.1.linux-amd64 -o ~/.docker/cli-plugins/docker-buildx
+        chmod a+x ~/.docker/cli-plugins/docker-buildx
+        docker buildx version
+        docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+        docker buildx create --name jeedom-docker-builder --driver docker-container --use
+    - uses: actions/checkout@v2
+    - name: Build the Docker images
+      run: |
+        docker buildx build --platform linux/arm,linux/arm64 backup --file backup/Dockerfile --tag jeedom_backup:latest
+        docker buildx build --platform linux/arm,linux/arm64 jeedom-core#stable --file jeedom-core#stable/Dockerfile --tag jeedom_server:latest
+    - name: Publish the Docker images
+      if: github.event_name == 'push'
+      run: |
+        docker tag jeedom_backup:latest docker.pkg.github.com/$GITHUB_REPOSITORY/jeedom_backup_multiarch:latest
+        docker tag jeedom_server:latest docker.pkg.github.com/$GITHUB_REPOSITORY/jeedom_server_multiarch:latest
+        echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u "$GITHUB_ACTOR" https://pkg.docker.github.com/$GITHUB_REPOSITORY --password-stdin
+        docker push docker.pkg.github.com/$GITHUB_REPOSITORY/jeedom_backup_multiarch:latest
+        docker push docker.pkg.github.com/$GITHUB_REPOSITORY/jeedom_server_multiarch:latest
+
