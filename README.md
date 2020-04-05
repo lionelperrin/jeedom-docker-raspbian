@@ -2,10 +2,11 @@ This repository contains the suitable docker-compose / Dockerfile to start a fre
 
 # Installation steps
 
- 1. Install docker on your machine. When using raspbian, docker can be installed with: `apt-get install docker docker-compose`
- 2. Copy/Rename the `env_template` file into .env and set the required variables (mainly passwords)
- 3. Start jeedom: `docker-compose up`
+ 1. Install docker on your machine. When using raspbian, docker can be installed with: `apt-get install docker docker-compose`.
+ 2. Copy/Rename the `env_template` file into .env and set the required variables (mainly passwords).
+ 3. Start jeedom: `docker-compose up`.
  4. After building the images, jeedom will be started and available on port 9080. Follow the Get Started guide for Jeedom to proceed with the configuration.
+ 5. Backups can be sent using a command like `docker-compose -f docker-compose.backup.yml run --rm backup`.
 
 # What's in this repo
 
