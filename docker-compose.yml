@@ -9,8 +9,6 @@ services:
   server:
     build:
       context: ./jeedom-core#stable
-      args:
-       - SHELL_ROOT_PASSWORD=$SHELL_ROOT_PASSWORD
     privileged: true
     volumes:
      - jeedomvol:/var/www/html

@@ -2,14 +2,13 @@ FROM raspbian/stretch
 
 MAINTAINER info@jeedom.com
 
-ARG SHELL_ROOT_PASSWORD
 ENV APACHE_PORT 80
 ENV SSH_PORT 22
 ENV MODE_HOST 0
 
 RUN apt-get update && apt-get install -y wget openssh-server supervisor mysql-client
 
-RUN echo "root:${SHELL_ROOT_PASSWORD}" | chpasswd && \
+RUN echo "root:$(tr -cd '[:alnum:]' < /dev/urandom | fold -w16 | head -n1)" | chpasswd && \
   sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
   sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd
 
