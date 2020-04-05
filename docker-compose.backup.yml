@@ -1,0 +1,17 @@
+version: "3.3"
+
+services:
+  backup:
+    build:
+      context: ./backup
+    volumes:
+     - jeedomvol:/jeedomvol
+     - mysqlvol:/mysqlvol
+    env_file: .env
+    command: /bin/sleep 3600
+    command: ["/bin/sh", "-c", "/bin/send_to_azure.sh /jeedomvol/backup/*.tar.gz"]
+
+volumes:
+  mysqlvol:
+
+  jeedomvol:

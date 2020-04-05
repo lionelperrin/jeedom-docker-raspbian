@@ -1,0 +1,27 @@
+version: "3.3"
+
+services:
+  mysql:
+    image: biarms/mysql
+    volumes:
+     - mysqlvol:/var/lib/mysql
+    env_file: .env
+  server:
+    build:
+      context: ./jeedom-core#stable
+      args:
+       - SHELL_ROOT_PASSWORD=$SHELL_ROOT_PASSWORD
+    privileged: true
+    volumes:
+     - jeedomvol:/var/www/html
+    env_file: .env
+    depends_on:
+     - mysql
+    ports:
+     - "9022:22"
+     - "9080:80"
+
+volumes:
+  mysqlvol:
+
+  jeedomvol:

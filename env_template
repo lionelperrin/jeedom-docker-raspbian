@@ -1,0 +1,6 @@
+# fill these variables and rename the file into .env
+MYSQL_ROOT_PASSWORD=
+ROOT_PASSWORD=
+SHELL_ROOT_PASSWORD=
+AZURE_BLOB_URI=
+AZURE_BLOB_SAS_KEY=
