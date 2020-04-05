@@ -1,4 +1,4 @@
-This repository contains the suitable docker-compose / Dockerfile to start a fresh instance of (Jeedom)[https://www.jeedom.com].
+This repository contains the suitable docker-compose / Dockerfile to start a fresh instance of [Jeedom](https://www.jeedom.com).
 
 # Installation steps
 
@@ -11,4 +11,4 @@ This repository contains the suitable docker-compose / Dockerfile to start a fre
 
  - the jeedom-core#stable folder is a git-subtree of the stable branch of the root project github/jeedom-core. The only change with the standard repo is the base image of the Dockerfile (raspbian instead of debian).
    `git subtree add --prefix jeedom-core#stable https://github.com/jeedom/core.git stable --squash`
- - the backup folder contains a shell script to archive the jeedom backage on (Azure Blob Storage)[https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction]
+ - the backup folder contains a shell script to archive the jeedom backage on [Azure Blob Storage](https://docs.microsoft.com/azure/storage/blobs/storage-blobs-introduction)
